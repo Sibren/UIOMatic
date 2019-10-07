@@ -1,11 +1,12 @@
 ﻿angular.module("umbraco").controller("UIOMatic.FieldEditors.Pickers.MemberController",
-    function ($scope, $routeParams, dialogService, entityResource, iconHelper) {
+    function ($scope, $routeParams, editorService, entityResource, iconHelper) {
 
         function init() {
 
             if (!$scope.setting) {
                 $scope.setting = {};
             }
+            console.log('propertyValue', $scope.property.value);
 
             var val = parseInt($scope.property.value);
 
@@ -19,14 +20,23 @@
             }
 
             $scope.openMemberPicker = function () {
-                var d = dialogService.treePicker({
+                editorService.treePicker({
                     section: "member",
                     treeAlias: "member",
                     multiPicker: false,
-                    callback: populate
+                    filter: function filter(i) {
+                        return i.metaData.isContainer == true;
+                    },
+                    filterCssClass: 'not-allowed',
+                    submit: function (model) {
+                        populate(model.selection[0]);
+                        editorService.close();
+                    },
+                    close: function () {
+                        editorService.close();
+                    }
                 });
             };
-
 
             $scope.clear = function () {
                 $scope.id = undefined;

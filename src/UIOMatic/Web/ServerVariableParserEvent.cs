@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using UIOMatic.Web.Controllers;
+using Umbraco.Core;
 using Umbraco.Core.Composing;
 using Umbraco.Web;
 using Umbraco.Web.JavaScript;
@@ -11,6 +12,15 @@ using Umbraco.Web.JavaScript;
 
 namespace UIOMatic.Web
 {
+
+    public class ServerVariableComposer : IComposer
+    {
+        public void Compose(Composition composition)
+        {
+            composition.Components().Append<ServerVariableParserEvent>();
+        }
+    }
+
     public class ServerVariableParserEvent : IComponent
     {
         public ServerVariableParserEvent()

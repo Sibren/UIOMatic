@@ -167,8 +167,12 @@ namespace UIOMatic.Web.Controllers
                             var attri2 = attri as UIOMaticAttribute;
                             if (attri2 != null)
                             {
+                                // Sibren: this seems to be needed for creating a new item without create.html.
+                                // Todo: check why it won't renew, you have to go back to 
                                 if (!attri2.ReadOnly)
-                                    menu.Items.Add<ActionNew>(createText);
+                                {
+                                    menu.Items.Add(new CreateChildEntity(Services.TextService));
+                                }
 
                                 if (attri2.RenderType == UIOMaticRenderType.Tree)
                                     menu.Items.Add(new RefreshNode(refreshText, true));
